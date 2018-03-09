@@ -1,23 +1,31 @@
 const express = require('express');
-const app = express();
+const server = express();
 const morgan = require('morgan');
 const bodyParser = require('body-parser');
 // const path = require('path');
 // const routes = require('./routes') //enable later
-const Sequelize = require('sequelize');
-const db = new Sequelize('postgres://localhost:5432/wikistack');
+const models = require('./models');
 
-app.use(morgan('dev'));
-app.use(express.static(__dirname + '/public'));
-app.use(bodyParser.urlencoded({extended: false}));
-app.use(bodyParser.json());
-// app.use(routes); //enable later
+server.use(morgan('dev'));
+server.use(express.static(__dirname + '/public'));
+server.use(bodyParser.urlencoded({extended: false}));
+server.use(bodyParser.json());
+// server.use(routes); //enable later
 
-app.get('/', (req, res) => {
+server.get('/', (req, res) => {
   res.send('Hello World');
 });
 
 const PORT = 1337;
-app.listen(PORT, () => {
-  console.log('Listening on port ' + PORT);
-});
+
+const init = async () => {
+  await models.db.sync({force: true});
+
+  server.listen(PORT, () => {
+    console.log('Listening on port ' + PORT);
+  });
+}
+
+init();
+
+
