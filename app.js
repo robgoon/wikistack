@@ -21,7 +21,7 @@ server.get('/', (req, res, next) => {
 const PORT = 1337;
 
 const init = async () => {
-  await models.db.sync({force: true});
+  await models.db.sync();
 
   server.listen(PORT, () => {
     console.log('Listening on port ' + PORT);
