@@ -21,7 +21,7 @@ server.get('/', (req, res, next) => {
 const PORT = 1337;
 
 const init = async () => {
-  await models.db.sync();
+  await models.db.sync({force:true});//REMEMBER: force:true drops tables
 
   server.listen(PORT, () => {
     console.log('Listening on port ' + PORT);
